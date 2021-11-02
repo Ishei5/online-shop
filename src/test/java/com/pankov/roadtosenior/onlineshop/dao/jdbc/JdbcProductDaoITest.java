@@ -13,7 +13,7 @@ class JdbcProductDaoITest {
     @Test
     @Disabled
     public void testGetAll() {
-        ConnectionFactory connectionFactory = null;
+        /*ConnectionFactory connectionFactory = null;
         JdbcProductDao jdbcProductDao = new JdbcProductDao(connectionFactory);
         List<Product> productList = jdbcProductDao.findAll();
 
@@ -23,6 +23,6 @@ class JdbcProductDaoITest {
             assertNotNull(product.getName());
             assertNotNull(product.getPrice());
             assertNotNull(product.getCreationDate());
-        }
+        }*/
     }
 }
