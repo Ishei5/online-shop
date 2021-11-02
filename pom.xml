@@ -46,17 +46,14 @@
                 <version>2.22.2</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+            </plugin>
+            <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.0.3</version>
-                <!--<executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>migrate</goal>
-                        </goals>
-                    </execution>
-                </executions>-->
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
