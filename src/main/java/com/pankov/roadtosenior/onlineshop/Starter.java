@@ -3,7 +3,6 @@ package com.pankov.roadtosenior.onlineshop;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pankov.roadtosenior.onlineshop.dao.ProductDao;
 import com.pankov.roadtosenior.onlineshop.dao.UserDao;
-import com.pankov.roadtosenior.onlineshop.dao.jdbc.ConnectionFactory;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.JdbcUserDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.JdbcProductDao;
 import com.pankov.roadtosenior.onlineshop.service.ProductService;
@@ -20,7 +19,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.DispatcherType;
-import javax.sql.DataSource;
 import java.util.EnumSet;
 import java.util.Properties;
 
@@ -35,7 +33,6 @@ public class Starter {
         dataSource.setUrl(properties.getProperty("db.url"));
         dataSource.setUser(properties.getProperty("db.username"));
         dataSource.setPassword(properties.getProperty("db.password"));
-//        DataSource connectionFactory = new ConnectionFactory(properties);
         ProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         UserDao jdbUserDao = new JdbcUserDao(dataSource);
 
