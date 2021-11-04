@@ -1,6 +1,5 @@
 package com.pankov.roadtosenior.onlineshop;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import com.pankov.roadtosenior.onlineshop.dao.ProductDao;
 import com.pankov.roadtosenior.onlineshop.dao.UserDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.JdbcUserDao;
@@ -17,6 +16,9 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.postgresql.ds.PGSimpleDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
@@ -24,15 +26,17 @@ import java.util.Properties;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
-
+        Logger log = LoggerFactory.getLogger(Starter.class);
         CachedPropertiesReader propertiesReader = new CachedPropertiesReader("application.properties");
         Properties properties = propertiesReader.getCachedProperties();
         Long sessionTimeToLive = propertiesReader.getLongProperty("sessionTimeToLive");
 
-        MysqlDataSource dataSource = new MysqlDataSource();
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setUrl(properties.getProperty("db.url"));
         dataSource.setUser(properties.getProperty("db.username"));
         dataSource.setPassword(properties.getProperty("db.password"));
+        dataSource.setCurrentSchema(properties.getProperty("db.schema"));
+
         ProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         UserDao jdbUserDao = new JdbcUserDao(dataSource);
 
@@ -72,7 +76,8 @@ public class Starter {
         contextHandler.addFilter(new FilterHolder(new GuestFilter(securityService)),
                 "/search/*", EnumSet.of(DispatcherType.REQUEST));
 
-        Server server = new Server(8080);
+        log.info(System.getProperty("server.port"));
+        Server server = new Server(Integer.parseInt(System.getProperty("server.port")));
         server.setHandler(contextHandler);
         server.start();
     }

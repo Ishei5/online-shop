@@ -17,7 +17,7 @@ public class JdbcUserDao implements UserDao {
     private final static UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
 
     private final static String FIND_USER_BY_NAME_QUERY =
-            "SELECT id, username, password, salt, role_id FROM user WHERE username = ?;";
+            "SELECT id, username, password, salt, role_id FROM users WHERE username = ?;";
 
     private DataSource dataSource;
 

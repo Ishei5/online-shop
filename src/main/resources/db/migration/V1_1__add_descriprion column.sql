@@ -1,1 +1,1 @@
-ALTER TABLE products ADD COLUMN description TEXT AFTER creationDate;
+ALTER TABLE products ADD COLUMN description TEXT;

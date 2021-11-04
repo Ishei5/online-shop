@@ -54,6 +54,16 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.0.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>
+                                migrate
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -79,6 +89,17 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>2.0.5</version>
+                <configuration>
+                    <appName>roadtosenior-online-shop</appName>
+                    <processTypes>
+                        <web>java -Dserver.port=$PORT $JAVA_OPTS -jar target/online-shop-1.0-SNAPSHOT-jar-with-dependencies.jar</web>
+                    </processTypes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -89,10 +110,10 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
-                <db.url>jdbc:mysql://127.0.0.1:3306/onlineshop</db.url>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
+                <db.driver>org.postgresql.Driver</db.driver>
+                <db.url>jdbc:postgresql://ec2-176-34-168-83.eu-west-1.compute.amazonaws.com:5432/d5ibrbtvmhr9ir</db.url>
+                <db.username>sbxqcgxqxmyetr</db.username>
+                <db.password>85599c4f92ca8e0da2a2e90c9a74435c953663200d58ff56dba09b5c6d989057</db.password>
                 <db.schema>onlineshop</db.schema>
 
                 <flyway.user>${db.username}</flyway.user>
@@ -123,11 +144,10 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.31</version>
         </dependency>
-
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.26</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.8</version>
         </dependency>
 
         <!--Logging-->
