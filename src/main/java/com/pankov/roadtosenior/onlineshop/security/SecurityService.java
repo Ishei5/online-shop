@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class SecurityService {
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+
     private UserService userService;
     private Long sessionTimeToLive;
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
     private static final Map<String, Session> sessionMap = Collections.synchronizedMap(new HashMap<>());
 
     public void setUserService(UserService userService) {
@@ -42,6 +43,11 @@ public class SecurityService {
         sessionMap.put(token, session);
 
         return token;
+    }
+
+    public void logout(String token) {
+        Session session = sessionMap.remove(token);
+        log.info(session.getUser().toString(), " - logout");
     }
 
     public Session getSession(String token) {

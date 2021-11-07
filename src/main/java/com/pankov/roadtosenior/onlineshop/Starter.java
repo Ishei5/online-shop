@@ -62,6 +62,7 @@ public class Starter {
         contextHandler.addServlet(new ServletHolder(new CartServlet(securityService)), "/cart");
         contextHandler.addServlet(new ServletHolder(new AddProductToCartServlet(userService)), "/cart/add");
         contextHandler.addServlet(new ServletHolder(new RemoveProductFromCartServlet(userService)), "/cart/remove");
+        contextHandler.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
 
         contextHandler.addFilter(new FilterHolder(new AdminFilter(securityService)),
                 "/product/*", EnumSet.of(DispatcherType.REQUEST));
@@ -75,6 +76,8 @@ public class Starter {
                 "/products", EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter(new FilterHolder(new GuestFilter(securityService)),
                 "/search/*", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter(new FilterHolder(new GuestFilter(securityService)),
+                "/logout", EnumSet.of(DispatcherType.REQUEST));
 
         log.info(System.getProperty("server.port"));
         Server server = new Server(Integer.parseInt(System.getProperty("server.port")));
