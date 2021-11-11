@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class JdbcUserDao implements UserDao {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -28,16 +25,14 @@ public class JdbcUserDao implements UserDao {
     @Override
     public User findByName(String name) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_NAME_QUERY)) {
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(QueryHandler.handleQuery(FIND_USER_BY_NAME_QUERY, name))) {
 
-            statement.setString(1, name);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    throw new SQLException("User with name = " + name + " not found in DB");
-                }
-                return USER_ROW_MAPPER.mapRow(resultSet);
+            if (!resultSet.next()) {
+                throw new SQLException("User with name = " + name + " not found in DB");
             }
 
+            return USER_ROW_MAPPER.mapRow(resultSet);
         } catch (SQLException exception) {
             log.warn("Cannot can get user from DB");
             throw new RuntimeException("Cannot can get user from DB", exception);

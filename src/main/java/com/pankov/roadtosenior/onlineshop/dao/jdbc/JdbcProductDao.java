@@ -50,17 +50,15 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public Product findById(Long id) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID_QUERY)) {
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(QueryHandler.handleQuery(FIND_BY_ID_QUERY, id))) {
 
-            statement.setLong(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-
-                if (!resultSet.next()) {
-                    throw new SQLException("Product with ID = " + id + " not found in DB");
-                }
-
-                return PRODUCT_ROW_MAPPER.mapRow(resultSet);
+            if (!resultSet.next()) {
+                throw new SQLException("Product with ID = " + id + " not found in DB");
             }
+
+            return PRODUCT_ROW_MAPPER.mapRow(resultSet);
+
         } catch (SQLException exception) {
             throw new RuntimeException("Cannot get product from DB", exception);
         }
@@ -69,9 +67,9 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY)) {
-            statement.setLong(1, id);
-            statement.executeUpdate();
+             Statement statement = connection.createStatement()) {
+
+            statement.execute(QueryHandler.handleQuery(DELETE_BY_ID_QUERY, id));
 
         } catch (SQLException exception) {
             throw new RuntimeException("Cannot delete product from DB", exception);
@@ -81,14 +79,13 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void update(Product product) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-
-            statement.setString(1, product.getName());
-            statement.setDouble(2, product.getPrice());
-            statement.setString(3, product.getDescription());
-            statement.setLong(4, product.getId());
-
-            statement.executeUpdate();
+             Statement statement = connection.createStatement()) {
+            statement.execute(
+                    QueryHandler.handleQuery(UPDATE_QUERY,
+                            product.getName(),
+                            product.getPrice(),
+                            product.getDescription(),
+                            product.getId()));
 
         } catch (SQLException exception) {
             throw new RuntimeException("Cannot update product with ID " + product.getId(), exception);
@@ -98,13 +95,16 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public Long add(Product product) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+             Statement statement = connection.createStatement()) {
 
-            statement.setString(1, product.getName());
-            statement.setDouble(2, product.getPrice());
-            statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            statement.setString(4, product.getDescription());
-            statement.executeUpdate();
+            statement.executeUpdate(QueryHandler.handleQuery(
+                    ADD_QUERY,
+                    product.getName(),
+                    product.getPrice(),
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    product.getDescription()),
+                    Statement.RETURN_GENERATED_KEYS);
+
             int id = 0;
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -122,10 +122,9 @@ public class JdbcProductDao implements ProductDao {
         List<Product> productsList = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_MATCH_IN_DESCRIPTION)) {
-
-            statement.setString(1, "%" + searchText + "%");
-            ResultSet resultSet = statement.executeQuery();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(
+                     QueryHandler.handleQuery(FIND_ALL_BY_MATCH_IN_DESCRIPTION, ("%" + searchText + "%")))) {
 
             while (resultSet.next()) {
                 Product product = PRODUCT_ROW_MAPPER.mapRow(resultSet);
