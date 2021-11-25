@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 public class EditProductServlet extends HttpServlet {
@@ -27,7 +26,7 @@ public class EditProductServlet extends HttpServlet {
         Long id = Long.valueOf(req.getParameter("id"));
         Map<String, Object> productParameters = Map.of("product", productService.getById(id));
 
-        String page = pageGenerator.getPage("/editProduct.ftl", productParameters);
+        String page = pageGenerator.getPage("editProduct.ftl", productParameters);
 
         resp.getWriter().println(page);
 

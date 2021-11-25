@@ -17,7 +17,7 @@
             <tr>
                 <td class="col-lg-1	col-xl-1">${product.id}</td>
                 <td class="col-lg-1	col-xl-2">${product.name}</td>
-                <td class="col-lg-1	col-xl-2">${product.price?string["0.00"]}</td>
+                <td class="col-lg-1	col-xl-2">${product.price}</td>
                 <td class="col-lg-1	col-xl-2">${product.creationDate}</td>
                 <td class="col-lg-1	col-xl-3">${product.description}</td>
                 <td class="col-lg-1	col-xl-2">

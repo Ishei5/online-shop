@@ -38,7 +38,7 @@ public class ProductServlet extends HttpServlet {
         }
         productParameters.put("products", productsList);
 
-        String page = pageGenerator.getPage("/product.ftl", productParameters);
+        String page = pageGenerator.getPage("product.ftl", productParameters);
 
         resp.getWriter().println(page);
     }
