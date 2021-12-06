@@ -4,6 +4,7 @@ import com.pankov.roadtosenior.onlineshop.dao.ProductDao;
 import com.pankov.roadtosenior.onlineshop.dao.UserDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.JdbcUserDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.JdbcProductDao;
+import com.pankov.roadtosenior.onlineshop.service.CartService;
 import com.pankov.roadtosenior.onlineshop.service.ProductService;
 import com.pankov.roadtosenior.onlineshop.service.UserService;
 import com.pankov.roadtosenior.onlineshop.util.CachedPropertiesReader;
@@ -28,7 +29,7 @@ public class Starter {
     public static void main(String[] args) throws Exception {
         Logger log = LoggerFactory.getLogger(Starter.class);
         CachedPropertiesReader propertiesReader = new CachedPropertiesReader("application.properties");
-        Properties properties = propertiesReader.getCachedProperties();
+        Properties properties = propertiesReader.getProperties();
         Long sessionTimeToLive = propertiesReader.getLongProperty("sessionTimeToLive");
 
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
@@ -38,18 +39,17 @@ public class Starter {
         dataSource.setCurrentSchema(properties.getProperty("db.schema"));
 
         ProductDao jdbcProductDao = new JdbcProductDao(dataSource);
+
         UserDao jdbUserDao = new JdbcUserDao(dataSource);
 
-        ProductService productService = new ProductService();
-        productService.setJdbcProductDao(jdbcProductDao);
+        ProductService productService = new ProductService(jdbcProductDao);
 
-        UserService userService = new UserService();
-        SecurityService securityService = new SecurityService();
-        userService.setUserDao(jdbUserDao);
-        userService.setSecurityService(securityService);
-        userService.setProductService(productService);
-        securityService.setUserService(userService);
+        UserService userService = new UserService(jdbUserDao);
+
+        SecurityService securityService = new SecurityService(userService);
         securityService.setSessionTimeToLive(sessionTimeToLive);
+
+        CartService cartService = new CartService(securityService, productService);
 
         ProductServlet productServlet = new ProductServlet(productService);
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -59,9 +59,9 @@ public class Starter {
         contextHandler.addServlet(new ServletHolder(new AddProductServlet(productService)), "/product/add");
         contextHandler.addServlet(new ServletHolder(new EditProductServlet(productService)), "/product/edit");
         contextHandler.addServlet(new ServletHolder(new LoginServlet(securityService)), "/login");
-        contextHandler.addServlet(new ServletHolder(new CartServlet(securityService)), "/cart");
-        contextHandler.addServlet(new ServletHolder(new AddProductToCartServlet(userService)), "/cart/add");
-        contextHandler.addServlet(new ServletHolder(new RemoveProductFromCartServlet(userService)), "/cart/remove");
+        contextHandler.addServlet(new ServletHolder(new CartServlet()), "/cart");
+        contextHandler.addServlet(new ServletHolder(new AddProductToCartServlet(cartService)), "/cart/add");
+        contextHandler.addServlet(new ServletHolder(new RemoveProductFromCartServlet(cartService)), "/cart/remove");
         contextHandler.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
 
         contextHandler.addFilter(new FilterHolder(new AdminFilter(securityService)),
@@ -80,7 +80,8 @@ public class Starter {
                 "/logout", EnumSet.of(DispatcherType.REQUEST));
 
         log.info(System.getProperty("server.port"));
-        Server server = new Server(Integer.parseInt(System.getProperty("server.port")));
+//        Server server = new Server(Integer.parseInt(System.getProperty("server.port")));
+        Server server = new Server(3000);
         server.setHandler(contextHandler);
         server.start();
     }

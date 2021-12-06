@@ -1,12 +1,9 @@
 package com.pankov.roadtosenior.onlineshop.web.servlet;
 
-import com.pankov.roadtosenior.onlineshop.security.SecurityService;
-import com.pankov.roadtosenior.onlineshop.security.Session;
-import com.pankov.roadtosenior.onlineshop.service.ProductService;
+import com.pankov.roadtosenior.onlineshop.service.CartService;
 import com.pankov.roadtosenior.onlineshop.service.UserService;
-import com.pankov.roadtosenior.onlineshop.util.CookieParser;
+import com.pankov.roadtosenior.onlineshop.web.util.CookieParser;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddProductToCartServlet extends HttpServlet {
-    private final UserService userService;
+    private final CartService cartService;
 
-    public AddProductToCartServlet(UserService userService) {
-        this.userService = userService;
+    public AddProductToCartServlet(CartService cartService) {
+        this.cartService = cartService;
     }
 
     @Override
@@ -25,7 +22,7 @@ public class AddProductToCartServlet extends HttpServlet {
         String token = CookieParser.getUserToken(req);
 
         long id = Long.parseLong(req.getParameter("id"));
-        userService.addProductToCart(token, id);
+        cartService.addProductToCart(token, id);
 
         resp.sendRedirect("/");
     }

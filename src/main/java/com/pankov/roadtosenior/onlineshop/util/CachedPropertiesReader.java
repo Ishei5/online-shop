@@ -14,7 +14,7 @@ public class CachedPropertiesReader {
         this.cachedProperties = readProperties();
     }
 
-    public Properties getCachedProperties() {
+    public Properties getProperties() {
         return new Properties(cachedProperties);
     }
 

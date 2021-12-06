@@ -1,4 +1,4 @@
-package com.pankov.roadtosenior.onlineshop.util;
+package com.pankov.roadtosenior.onlineshop.web.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;

@@ -1,7 +1,8 @@
 package com.pankov.roadtosenior.onlineshop.web.servlet;
 
+import com.pankov.roadtosenior.onlineshop.service.CartService;
 import com.pankov.roadtosenior.onlineshop.service.UserService;
-import com.pankov.roadtosenior.onlineshop.util.CookieParser;
+import com.pankov.roadtosenior.onlineshop.web.util.CookieParser;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,17 +12,17 @@ import java.io.IOException;
 
 public class RemoveProductFromCartServlet extends HttpServlet {
 
-    private final UserService userService;
+    private final CartService cartService;
 
-    public RemoveProductFromCartServlet(UserService userService) {
-        this.userService = userService;
+    public RemoveProductFromCartServlet(CartService cartService) {
+        this.cartService = cartService;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String token = CookieParser.getUserToken(request);
         long id = Long.parseLong(request.getParameter("id"));
-        userService.removeProductFromCart(token, id);
+        cartService.removeProductFromCart(token, id);
 
         response.sendRedirect("/");
     }

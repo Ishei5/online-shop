@@ -1,7 +1,7 @@
 package com.pankov.roadtosenior.onlineshop.web.servlet;
 
 import com.pankov.roadtosenior.onlineshop.security.SecurityService;
-import com.pankov.roadtosenior.onlineshop.util.CookieParser;
+import com.pankov.roadtosenior.onlineshop.web.util.CookieParser;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

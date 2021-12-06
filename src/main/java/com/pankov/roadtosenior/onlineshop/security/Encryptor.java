@@ -27,8 +27,4 @@ public class Encryptor {
             throw new RuntimeException(exception);
         }
     }
-
-    public String generateSalt() {
-        return UUID.randomUUID().toString();
-    }
 }

@@ -49,6 +49,7 @@ public abstract class SecurityFilter extends HttpFilter {
             return;
         }
 
+        req.setAttribute("session", session);
         chain.doFilter(req, res);
     }
 

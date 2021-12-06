@@ -9,6 +9,10 @@ public class ProductService {
 
     private ProductDao productDao;
 
+    public ProductService(ProductDao productDao) {
+        this.productDao = productDao;
+    }
+
     public List<Product> getAll() {
         return productDao.findAll();
     }
@@ -31,9 +35,5 @@ public class ProductService {
 
     public List<Product> findByMatchInDescription(String searchText) {
         return productDao.findByMatchInDescription(searchText);
-    }
-
-    public void setJdbcProductDao(ProductDao productDao) {
-        this.productDao = productDao;
     }
 }
