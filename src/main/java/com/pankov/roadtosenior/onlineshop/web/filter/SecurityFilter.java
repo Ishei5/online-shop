@@ -3,34 +3,32 @@ package com.pankov.roadtosenior.onlineshop.web.filter;
 import com.pankov.roadtosenior.onlineshop.entity.Role;
 import com.pankov.roadtosenior.onlineshop.security.Session;
 import com.pankov.roadtosenior.onlineshop.security.SecurityService;
+import com.pankov.roadtosenior.onlineshop.service.ServiceLocator;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public abstract class SecurityFilter extends HttpFilter {
-    private final SecurityService securityService;
+public abstract class SecurityFilter implements Filter {
 
-    public SecurityFilter(SecurityService securityService) {
-        this.securityService = securityService;
-    }
+    private final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
 
     @Override
-    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         Session session = null;
 
-        String path = req.getRequestURI();
+        String path = httpServletRequest.getRequestURI();
 
         if (path.equals("/login")) {
-            chain.doFilter(req, res);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        Cookie[] cookies = req.getCookies();
+        Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("user-token".equals(cookie.getName())) {
@@ -40,17 +38,27 @@ public abstract class SecurityFilter extends HttpFilter {
         }
 
         if (session == null) {
-            res.sendRedirect("/login");
+            httpServletResponse.sendRedirect("/login");
             return;
         }
 
         if (requiredRole().getId() < session.getUser().getRoleId()) {
-            res.sendError(HttpServletResponse.SC_FORBIDDEN);
+            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
-        req.setAttribute("session", session);
-        chain.doFilter(req, res);
+        httpServletRequest.setAttribute("session", session);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
     abstract Role requiredRole();

@@ -1,6 +1,7 @@
 package com.pankov.roadtosenior.onlineshop.security;
 
 import com.pankov.roadtosenior.onlineshop.entity.User;
+import com.pankov.roadtosenior.onlineshop.service.ServiceLocator;
 import com.pankov.roadtosenior.onlineshop.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,14 +13,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SecurityService {
     private static final List<Session> sessionList = new CopyOnWriteArrayList<>();
 
-    private UserService userService;
+    private final UserService userService = ServiceLocator.getService(UserService.class);
     private Long sessionTimeToLive;
 
-    public SecurityService(UserService userService) {
-        this.userService = userService;
-    }
-
     public String login(String username, String password) {
+
         User user = checkCredentials(username, password);
 
         if (user == null) {

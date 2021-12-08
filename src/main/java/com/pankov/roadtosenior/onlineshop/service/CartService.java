@@ -6,13 +6,10 @@ import com.pankov.roadtosenior.onlineshop.security.SecurityService;
 import java.util.List;
 
 public class CartService {
-    private final SecurityService securityService;
-    private final ProductService productService;
+    private final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private final ProductService productService = ServiceLocator.getService(ProductService.class);
 
-    public CartService(SecurityService securityService, ProductService productService) {
-        this.securityService = securityService;
-        this.productService = productService;
-    }
+    public CartService() {}
 
     public void addProductToCart(String token, long productId) {
         Product product = productService.getById(productId);

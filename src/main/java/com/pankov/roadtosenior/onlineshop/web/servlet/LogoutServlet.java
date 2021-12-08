@@ -1,6 +1,7 @@
 package com.pankov.roadtosenior.onlineshop.web.servlet;
 
 import com.pankov.roadtosenior.onlineshop.security.SecurityService;
+import com.pankov.roadtosenior.onlineshop.service.ServiceLocator;
 import com.pankov.roadtosenior.onlineshop.web.util.CookieParser;
 
 import javax.servlet.ServletException;
@@ -10,11 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class LogoutServlet extends HttpServlet {
-    private final SecurityService securityService;
-
-    public LogoutServlet(SecurityService securityService) {
-        this.securityService = securityService;
-    }
+    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

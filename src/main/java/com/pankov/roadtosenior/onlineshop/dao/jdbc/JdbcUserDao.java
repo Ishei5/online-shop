@@ -3,6 +3,7 @@ package com.pankov.roadtosenior.onlineshop.dao.jdbc;
 import com.pankov.roadtosenior.onlineshop.dao.UserDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import com.pankov.roadtosenior.onlineshop.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Slf4j
 public class JdbcUserDao implements UserDao {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final static UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
 
     private final static String FIND_USER_BY_NAME_QUERY =

@@ -4,7 +4,7 @@ import com.pankov.roadtosenior.onlineshop.dao.UserDao;
 import com.pankov.roadtosenior.onlineshop.entity.User;
 
 public class UserService {
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public UserService(UserDao userDao) {
         this.userDao = userDao;

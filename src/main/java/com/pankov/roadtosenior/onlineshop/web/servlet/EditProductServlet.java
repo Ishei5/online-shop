@@ -2,6 +2,7 @@ package com.pankov.roadtosenior.onlineshop.web.servlet;
 
 import com.pankov.roadtosenior.onlineshop.entity.Product;
 import com.pankov.roadtosenior.onlineshop.service.ProductService;
+import com.pankov.roadtosenior.onlineshop.service.ServiceLocator;
 import com.pankov.roadtosenior.onlineshop.web.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -16,11 +17,7 @@ import java.util.Map;
 public class EditProductServlet extends HttpServlet {
 
     private PageGenerator pageGenerator = new PageGenerator();
-    private ProductService productService;
-
-    public EditProductServlet(ProductService productService) {
-        this.productService = productService;
-    }
+    private ProductService productService = ServiceLocator.getService(ProductService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

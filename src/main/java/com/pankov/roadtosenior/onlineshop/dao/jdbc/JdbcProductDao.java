@@ -96,7 +96,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     @Override
-    public Long add(Product product) {
+    public Product add(Product product) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -105,13 +105,13 @@ public class JdbcProductDao implements ProductDao {
             statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             statement.setString(4, product.getDescription());
             statement.executeUpdate();
-            int id = 0;
+            long id = 0L;
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    id = generatedKeys.getInt(1);
+                    id = generatedKeys.getLong(1);
                 }
             }
-            return (long) id;
+            return findById(id);
         } catch (SQLException exception) {
             throw new RuntimeException("Cannot add product to DB", exception);
         }

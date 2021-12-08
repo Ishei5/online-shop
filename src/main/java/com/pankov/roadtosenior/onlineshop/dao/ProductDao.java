@@ -14,7 +14,7 @@ public interface ProductDao {
 
     void update(Product product);
 
-    Long add(Product product);
+    Product add(Product product);
 
     List<Product> findByMatchInDescription(String searchText);
 }

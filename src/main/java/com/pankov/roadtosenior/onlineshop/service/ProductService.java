@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ProductService {
 
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
     public ProductService(ProductDao productDao) {
         this.productDao = productDao;
@@ -25,8 +25,8 @@ public class ProductService {
         productDao.delete(id);
     }
 
-    public void add(Product product) {
-        productDao.add(product);
+    public Product add(Product product) {
+       return productDao.add(product);
     }
 
     public void update(Product product) {

@@ -7,6 +7,7 @@
     <groupId>com.pankov.roadtosenior</groupId>
     <artifactId>online-shop</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
@@ -70,13 +71,21 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.44.v20210927</version>
+            </plugin>
+
+            <plugin>
                 <groupId>com.heroku.sdk</groupId>
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>2.0.5</version>
                 <configuration>
                     <appName>roadtosenior-online-shop</appName>
                     <processTypes>
-                        <web>java -Dserver.port=$PORT $JAVA_OPTS -jar target/online-shop-1.0-SNAPSHOT-jar-with-dependencies.jar</web>
+                        <web>java -Dserver.port=$PORT $JAVA_OPTS -jar
+                            target/online-shop-1.0-SNAPSHOT-jar-with-dependencies.jar
+                        </web>
                     </processTypes>
                 </configuration>
             </plugin>
@@ -134,9 +143,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>10.0.6</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
