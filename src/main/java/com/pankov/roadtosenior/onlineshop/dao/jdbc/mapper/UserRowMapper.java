@@ -1,13 +1,15 @@
 package com.pankov.roadtosenior.onlineshop.dao.jdbc.mapper;
 
 import com.pankov.roadtosenior.onlineshop.entity.User;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRowMapper {
+public class UserRowMapper implements RowMapper<User> {
 
-    public User mapRow(ResultSet resultSet) throws SQLException {
+    @Override
+    public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         long id = resultSet.getLong("id");
         String username = resultSet.getString("username");
         String password = resultSet.getString("password");

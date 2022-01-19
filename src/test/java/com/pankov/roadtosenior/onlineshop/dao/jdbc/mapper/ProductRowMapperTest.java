@@ -26,7 +26,7 @@ class ProductRowMapperTest {
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.SEPTEMBER, 21, 9, 30, 15);
         when(mockResultSet.getTimestamp("creationDate")).thenReturn(Timestamp.valueOf(localDateTime));
 
-        Product actualProduct = productRowMapper.mapRow(mockResultSet);
+        Product actualProduct = productRowMapper.mapRow(mockResultSet, 0);
 
         assertNotNull(actualProduct);
         assertEquals(1L, actualProduct.getId());
