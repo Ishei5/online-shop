@@ -1,13 +1,17 @@
 package com.pankov.roadtosenior.onlineshop.dao.jdbc;
 
+import com.pankov.roadtosenior.JdbcTemplate;
+import com.pankov.roadtosenior.holder.GeneratedKeyHolder;
+import com.pankov.roadtosenior.holder.KeyHolder;
 import com.pankov.roadtosenior.onlineshop.dao.ProductDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.pankov.roadtosenior.onlineshop.entity.Product;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;/*
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.KeyHolder;*/
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -58,6 +62,7 @@ public class JdbcProductDao implements ProductDao {
                 product.getId());
     }
 
+    @SneakyThrows
     @Override
     public Product add(Product product) {
         KeyHolder keyHolder = new GeneratedKeyHolder();

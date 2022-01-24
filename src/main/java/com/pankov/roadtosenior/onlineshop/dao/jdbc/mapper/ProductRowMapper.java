@@ -1,7 +1,8 @@
 package com.pankov.roadtosenior.onlineshop.dao.jdbc.mapper;
 
+import com.pankov.roadtosenior.mapper.RowMapper;
 import com.pankov.roadtosenior.onlineshop.entity.Product;
-import org.springframework.jdbc.core.RowMapper;
+//import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,10 +1,10 @@
 package com.pankov.roadtosenior.onlineshop.dao.jdbc;
 
+import com.pankov.roadtosenior.JdbcTemplate;
 import com.pankov.roadtosenior.onlineshop.dao.UserDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import com.pankov.roadtosenior.onlineshop.entity.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 @Slf4j
 public class JdbcUserDao implements UserDao {
