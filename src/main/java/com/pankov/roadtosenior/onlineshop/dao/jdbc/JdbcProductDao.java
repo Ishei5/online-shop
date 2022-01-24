@@ -7,16 +7,10 @@ import com.pankov.roadtosenior.onlineshop.dao.ProductDao;
 import com.pankov.roadtosenior.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.pankov.roadtosenior.onlineshop.entity.Product;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;/*
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;*/
+import lombok.extern.slf4j.Slf4j;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j

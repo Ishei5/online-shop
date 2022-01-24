@@ -9,7 +9,6 @@ import com.pankov.roadtosenior.onlineshop.security.SecurityService;
 import com.pankov.roadtosenior.onlineshop.util.CachedPropertiesReader;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.ds.PGSimpleDataSource;
-//import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
