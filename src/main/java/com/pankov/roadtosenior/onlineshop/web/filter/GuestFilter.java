@@ -1,8 +1,11 @@
 package com.pankov.roadtosenior.onlineshop.web.filter;
 
 import com.pankov.roadtosenior.onlineshop.entity.Role;
+import lombok.NoArgsConstructor;
 
-public class GuestFilter extends SecurityFilter{
+//@Component
+@NoArgsConstructor
+public class GuestFilter extends SecurityFilter {
 
     @Override
     Role requiredRole() {

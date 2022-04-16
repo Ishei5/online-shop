@@ -1,34 +1,47 @@
 package com.pankov.roadtosenior.onlineshop.web.servlet;
 
 import com.pankov.roadtosenior.onlineshop.entity.Product;
+import com.pankov.roadtosenior.onlineshop.security.SecurityService;
 import com.pankov.roadtosenior.onlineshop.security.Session;
-import com.pankov.roadtosenior.onlineshop.web.PageGenerator;
+import com.pankov.roadtosenior.onlineshop.service.CartService;
+import com.pankov.roadtosenior.onlineshop.web.util.CookieParser;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class CartServlet extends HttpServlet {
+@Controller
+@RequestMapping("/cart")
+@AllArgsConstructor
+public class CartServlet {
 
-    private PageGenerator pageGenerator = PageGenerator.getInstance();
+    private CartService cartService;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, Object> parameterMap = new HashMap<>();
-        List<Product> productList = null;
-        Session session = (Session) req.getAttribute("session");
-
+    @GetMapping
+    public String getCartBySession(@RequestAttribute Session session, Model model) {
         if (session != null) {
-            productList = session.getCart();
+            List<Product> productList = session.getCart();
+            model.addAttribute("products", productList);
         }
-        parameterMap.put("products", productList);
-        String page = pageGenerator.getPage("cart.ftl", parameterMap);
+        return "cart";
+    }
 
-        resp.getWriter().println(page);
+    @PostMapping("/add")
+    public String addToCart(@RequestParam Long id,
+                            @CookieValue(value = "user-token") String token) {
+        cartService.addProductToCart(token, id);
+
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/remove")
+    public String removeFromCart(@RequestParam Long id,
+                                 @CookieValue(value = "user-token") String token) {
+        cartService.removeProductFromCart(token, id);
+
+        return "redirect:/cart";
     }
 }

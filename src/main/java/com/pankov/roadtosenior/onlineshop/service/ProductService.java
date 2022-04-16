@@ -2,16 +2,16 @@ package com.pankov.roadtosenior.onlineshop.service;
 
 import com.pankov.roadtosenior.onlineshop.dao.ProductDao;
 import com.pankov.roadtosenior.onlineshop.entity.Product;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class ProductService {
 
+    @Autowired
     private final ProductDao productDao;
-
-    public ProductService(ProductDao productDao) {
-        this.productDao = productDao;
-    }
 
     public List<Product> getAll() {
         return productDao.findAll();

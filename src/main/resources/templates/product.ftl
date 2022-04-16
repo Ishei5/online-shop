@@ -13,6 +13,7 @@
             </tr>
         </thead>
         <tbody>
+            <#if products?has_content>
             <#list products as product>
             <tr>
                 <td class="col-lg-1	col-xl-1">${product.id}</td>
@@ -28,7 +29,7 @@
                         </span>
                         </button>
                     </form>
-                    <form action="/" method="POST" style="display:inline!important">
+                    <form action="/product/remove" method="POST" style="display:inline!important">
                         <button name="id" value=${product.id} type="submit" class="btn btn-outline-danger">
                         <span class="btn-label">
                             <i class="bi bi-trash"></i>
@@ -45,6 +46,7 @@
                 </td>
             </tr>
             </#list>
+            </#if>
         </tbody>
     </table>
 </#macro>

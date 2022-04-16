@@ -23,7 +23,7 @@
 								<a class="nav-link" href="/cart">Cart</a>
 							</li>
 					    </ul>
-					    <form class="d-flex" action="/products" method="GET">
+					    <form class="d-flex" action="/product/search" method="GET">
 						    <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
 							<button class="btn btn-outline-success" type="submit">Search</button>
 						</form>

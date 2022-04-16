@@ -2,48 +2,83 @@ package com.pankov.roadtosenior.onlineshop.web.servlet;
 
 import com.pankov.roadtosenior.onlineshop.entity.Product;
 import com.pankov.roadtosenior.onlineshop.service.ProductService;
-import com.pankov.roadtosenior.onlineshop.service.ServiceLocator;
-import com.pankov.roadtosenior.onlineshop.web.PageGenerator;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
 
-public class ProductServlet extends HttpServlet {
+@Controller
+@RequestMapping(value = {"/", "/product"})
+@AllArgsConstructor
+public class ProductServlet {
 
-    private PageGenerator pageGenerator = PageGenerator.getInstance();
-    private ProductService productService = ServiceLocator.getService(ProductService.class);
+    private final ProductService productService;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @GetMapping
+    public String getProducts(Model model) {
+        model.addAttribute("products", productService.getAll());
 
-        Map<String, Object> productParameters = new HashMap<>();
-        List<Product> productsList;
-
-        String searchText = req.getParameter("search");
-
-        if (searchText != null) {
-            productsList = productService.findByMatchInDescription(searchText);
-        } else {
-            productsList = productService.getAll();
-        }
-        productParameters.put("products", productsList);
-
-        String page = pageGenerator.getPage("/product.ftl", productParameters);
-
-        resp.getWriter().println(page);
+        return "product";
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long id = Long.valueOf(req.getParameter("id"));
+    @GetMapping("/search")
+    public String searchProducts(@RequestParam String search, Model model) {
+        model.addAttribute("products", productService.findByMatchInDescription(search));
+
+        return "product";
+    }
+
+    @GetMapping("/add")
+    public String addProduct() {
+        return "addProduct";
+    }
+
+    @PostMapping("/add")
+    public String addProduct(@RequestParam String name,
+                             @RequestParam Double price,
+                             @RequestParam String description) {
+        productService.add(Product.builder()
+                .name(name)
+                .price(price)
+                .description(description)
+                .build());
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit")
+    public String editProduct(@RequestParam Long id, Model model) {
+        model.addAttribute("product", productService.getById(id));
+
+        return "editProduct";
+    }
+
+    @PostMapping("/edit")
+    public String editProduct(@RequestParam Long id,
+                              @RequestParam String name,
+                              @RequestParam Double price,
+                              @RequestParam LocalDateTime date,
+                              @RequestParam String description) {
+        productService.update(Product.builder()
+                .id(id)
+                .name(name)
+                .price(price)
+                .creationDate(date)
+                .description(description)
+                .build());
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/remove")
+    public String removeProduct(@RequestParam Long id) {
         productService.delete(id);
-        resp.sendRedirect("/");
-    }
 
+        return "redirect:/";
+    }
 }

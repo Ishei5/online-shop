@@ -1,9 +1,10 @@
 package com.pankov.roadtosenior.onlineshop.web.filter;
 
 import com.pankov.roadtosenior.onlineshop.entity.Role;
-import com.pankov.roadtosenior.onlineshop.security.Session;
 import com.pankov.roadtosenior.onlineshop.security.SecurityService;
-import com.pankov.roadtosenior.onlineshop.service.ServiceLocator;
+import com.pankov.roadtosenior.onlineshop.security.Session;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -13,7 +14,13 @@ import java.io.IOException;
 
 public abstract class SecurityFilter implements Filter {
 
-    private final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private SecurityService securityService;
+
+    @Override
+    public void init(FilterConfig filterConfig) {
+        ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
+        this.securityService = context.getBean(SecurityService.class);
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -32,7 +39,7 @@ public abstract class SecurityFilter implements Filter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("user-token".equals(cookie.getName())) {
-                    session = securityService.getSession(cookie.getValue());
+//                    session = securityService.getSession(cookie.getValue());
                 }
             }
         }
@@ -53,12 +60,6 @@ public abstract class SecurityFilter implements Filter {
 
     @Override
     public void destroy() {
-
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     abstract Role requiredRole();

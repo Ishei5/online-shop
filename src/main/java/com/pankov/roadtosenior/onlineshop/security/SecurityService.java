@@ -1,20 +1,31 @@
 package com.pankov.roadtosenior.onlineshop.security;
 
 import com.pankov.roadtosenior.onlineshop.entity.User;
-import com.pankov.roadtosenior.onlineshop.service.ServiceLocator;
 import com.pankov.roadtosenior.onlineshop.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SecurityService {
     private static final List<Session> sessionList = new CopyOnWriteArrayList<>();
 
-    private final UserService userService = ServiceLocator.getService(UserService.class);
-    private Long sessionTimeToLive;
+    @NonNull
+    private UserService userService;
+
+    @Getter
+    @Value("${sessionTimeToLive}")
+    private int sessionTimeToLive;
 
     public String login(String username, String password) {
 
@@ -71,10 +82,6 @@ public class SecurityService {
         }
         log.warn("Unknown user");
         return null;
-    }
-
-    public void setSessionTimeToLive(Long sessionTimeToLive) {
-        this.sessionTimeToLive = sessionTimeToLive;
     }
 
 }

@@ -41,12 +41,12 @@ public class ServiceLocator {
         UserService userService = new UserService(jdbcUserDao);
         addService(UserService.class, userService);
 
-        SecurityService securityService = new SecurityService();
-        securityService.setSessionTimeToLive(sessionTimeToLive);
-        addService(SecurityService.class, securityService);
+//        SecurityService securityService = new SecurityService();
+//        securityService.setSessionTimeToLive(sessionTimeToLive);
+//        addService(SecurityService.class, securityService);
 
-        CartService cartService = new CartService();
-        addService(CartService.class, cartService);
+//        CartService cartService = new CartService();
+//        addService(CartService.class, cartService);
     }
 
     public static <T> T getService(Class<T> serviceType) {
