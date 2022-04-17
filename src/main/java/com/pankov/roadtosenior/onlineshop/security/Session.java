@@ -3,7 +3,6 @@ package com.pankov.roadtosenior.onlineshop.security;
 import com.pankov.roadtosenior.onlineshop.entity.Product;
 import com.pankov.roadtosenior.onlineshop.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 

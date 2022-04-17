@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:application.properties"/>
+    <context:annotation-config/>
+
+    <bean id="dataSource" class="org.postgresql.ds.PGSimpleDataSource">
+        <property name="url" value="${db.url}"/>
+        <property name="user" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="currentSchema" value="${db.schema}"/>
+    </bean>
+    <bean id="securityService" class="com.pankov.roadtosenior.onlineshop.security.SecurityService"/>
+    <bean id="userService" class="com.pankov.roadtosenior.onlineshop.service.UserService"/>
+    <bean id="userDao" class="com.pankov.roadtosenior.onlineshop.dao.jdbc.JdbcUserDao"/>
+    <bean id="productService" class="com.pankov.roadtosenior.onlineshop.service.ProductService"/>
+    <bean id="productDao" class="com.pankov.roadtosenior.onlineshop.dao.jdbc.JdbcProductDao"/>
+    <bean id="cartService" class="com.pankov.roadtosenior.onlineshop.service.CartService"/>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+</beans>

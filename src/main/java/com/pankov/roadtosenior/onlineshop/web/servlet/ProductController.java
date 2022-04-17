@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping(value = {"/", "/product"})
 @AllArgsConstructor
-public class ProductServlet {
+public class ProductController {
 
     private final ProductService productService;
 
@@ -62,13 +62,13 @@ public class ProductServlet {
     public String editProduct(@RequestParam Long id,
                               @RequestParam String name,
                               @RequestParam Double price,
-                              @RequestParam LocalDateTime date,
+                              @RequestParam String creationDate,
                               @RequestParam String description) {
         productService.update(Product.builder()
                 .id(id)
                 .name(name)
                 .price(price)
-                .creationDate(date)
+                .creationDate(LocalDateTime.parse(creationDate))
                 .description(description)
                 .build());
 

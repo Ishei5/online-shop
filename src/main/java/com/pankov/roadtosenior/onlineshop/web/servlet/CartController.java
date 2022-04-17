@@ -1,22 +1,19 @@
 package com.pankov.roadtosenior.onlineshop.web.servlet;
 
 import com.pankov.roadtosenior.onlineshop.entity.Product;
-import com.pankov.roadtosenior.onlineshop.security.SecurityService;
 import com.pankov.roadtosenior.onlineshop.security.Session;
 import com.pankov.roadtosenior.onlineshop.service.CartService;
-import com.pankov.roadtosenior.onlineshop.web.util.CookieParser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
 @AllArgsConstructor
-public class CartServlet {
+public class CartController {
 
     private CartService cartService;
 

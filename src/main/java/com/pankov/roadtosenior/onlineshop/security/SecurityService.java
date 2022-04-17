@@ -2,7 +2,6 @@ package com.pankov.roadtosenior.onlineshop.security;
 
 import com.pankov.roadtosenior.onlineshop.entity.User;
 import com.pankov.roadtosenior.onlineshop.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 @RequiredArgsConstructor
 public class SecurityService {
-    private static final List<Session> sessionList = new CopyOnWriteArrayList<>();
+    private final List<Session> SESSION_LIST = new CopyOnWriteArrayList<>();
 
     @NonNull
     private UserService userService;
@@ -27,7 +26,7 @@ public class SecurityService {
     @Value("${sessionTimeToLive}")
     private int sessionTimeToLive;
 
-    public String login(String username, String password) {
+    public synchronized String login(String username, String password) {
 
         User user = checkCredentials(username, password);
 
@@ -35,7 +34,7 @@ public class SecurityService {
             return null;
         }
 
-        for (Session session : sessionList) {
+        for (Session session : SESSION_LIST) {
             if (username.equals(session.getUser().getUsername())) {
                 return session.getToken();
             }
@@ -43,32 +42,32 @@ public class SecurityService {
 
         String token = UUID.randomUUID().toString();
         Session session = new Session(token, user, new ArrayList<>(), LocalDateTime.now().plusSeconds(sessionTimeToLive));
-        sessionList.add(session);
+        SESSION_LIST.add(session);
 
         return token;
     }
 
     public void logout(String token) {
-        for (Session session : sessionList) {
+        for (Session session : SESSION_LIST) {
             if (token.equals(session.getToken())) {
                 log.info(session.getUser() + " - logout");
-                sessionList.remove(session);
+                SESSION_LIST.remove(session);
             }
         }
     }
 
     public Session getSession(String token) {
-        for (Session session : sessionList) {
+        for (Session session : SESSION_LIST) {
             if (token.equals(session.getToken())) {
                 if (session.getExpiredDate().isAfter(LocalDateTime.now())) {
                     return session;
                 } else {
-                    sessionList.remove(session);
+                    SESSION_LIST.remove(session);
                     log.warn("Your session is expired");
                 }
             }
         }
-
+        log.info("Session is null");
         return null;
     }
 
@@ -83,5 +82,4 @@ public class SecurityService {
         log.warn("Unknown user");
         return null;
     }
-
 }

@@ -1,12 +1,7 @@
 package com.pankov.roadtosenior.onlineshop.dao.jdbc;
 
-import com.pankov.roadtosenior.onlineshop.entity.Product;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JdbcProductDaoITest {
 

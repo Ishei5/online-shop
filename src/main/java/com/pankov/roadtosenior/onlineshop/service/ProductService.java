@@ -3,14 +3,12 @@ package com.pankov.roadtosenior.onlineshop.service;
 import com.pankov.roadtosenior.onlineshop.dao.ProductDao;
 import com.pankov.roadtosenior.onlineshop.entity.Product;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @AllArgsConstructor
 public class ProductService {
 
-    @Autowired
     private final ProductDao productDao;
 
     public List<Product> getAll() {
@@ -26,7 +24,7 @@ public class ProductService {
     }
 
     public Product add(Product product) {
-       return productDao.add(product);
+        return productDao.add(product);
     }
 
     public void update(Product product) {

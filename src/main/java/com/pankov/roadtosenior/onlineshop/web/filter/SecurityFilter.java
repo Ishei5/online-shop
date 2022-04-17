@@ -39,7 +39,7 @@ public abstract class SecurityFilter implements Filter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("user-token".equals(cookie.getName())) {
-//                    session = securityService.getSession(cookie.getValue());
+                    session = securityService.getSession(cookie.getValue());
                 }
             }
         }
@@ -63,4 +63,5 @@ public abstract class SecurityFilter implements Filter {
     }
 
     abstract Role requiredRole();
+//    {return null;}
 }

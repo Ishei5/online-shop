@@ -4,7 +4,6 @@ import com.pankov.roadtosenior.onlineshop.entity.Product;
 import com.pankov.roadtosenior.onlineshop.security.SecurityService;
 import com.pankov.roadtosenior.onlineshop.security.Session;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
